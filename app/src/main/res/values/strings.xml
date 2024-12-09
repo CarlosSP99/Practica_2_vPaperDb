@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Practica_2_v2</string>
+    <string name="password">Password</string>
+    <string name="user">User</string>
+    <string name="log_in">Log In</string>
+    <string name="sing_in">Sing Up</string>
+    <string name="repetir_password">Repetir password</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="Lenguaje">Introduzca un lenguaje</string>
+    <string name="Crear">Crear</string>
+    <string name="create_language">create_language</string>
+    <string name="language">language</string>
+    <string name="nombre_del_proyecto">Nombre del proyecto</string>
+    <string name="breve_descripcion">Breve descripcion</string>
+    <string name="nuevo_projecto">Nuevo projecto</string>
+    <string name="prioridad">Prioridad</string>
+    <string name="alta">ALTA</string>
+    <string name="media">MEDIA</string>
+    <string name="baja">BAJA</string>
+    <string name="descripci_n">Descripción</string>
+    <string name="informaci_n_del_mismo">Información del mismo</string>
+    <string name="tiempo_a_emplear">Tiempo a emplear</string>
+    <string name="tiempo_en_horas">Tiempo en Horas</string>
+
+    <string-array name="programming_languages">
+        <item>Java</item>
+        <item>Kotlin</item>
+        <item>Python</item>
+        <item>CPP</item>
+    </string-array>
+
+    <string name="introduzca_los_detalles_del_proyecto">Introduzca los detalles del proyecto</string>
+    <string name="fecha_de_inicio">Fecha de Inicio</string>
+    <string name="seleccione_una_fecha">Seleccione una fecha</string>
+    <string name="xx_xx_xxxx">XX/XX/XXXX</string>
+    <string name="modificar">Modificar</string>
+    <string name="eliminar">Eliminar</string>
+</resources>

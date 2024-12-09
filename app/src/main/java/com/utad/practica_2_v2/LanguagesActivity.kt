@@ -1,0 +1,104 @@
+package com.utad.practica_2_v2
+
+import android.app.AlertDialog
+import android.content.Intent
+import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.utad.practica_2_v2.dataStore.PaperDbManager
+import com.utad.practica_2_v2.databinding.ActivityLanguagesBinding
+import com.utad.practica_2_v2.languages.Languages
+import com.utad.practica_2_v2.languages.LanguagesAdapter
+import com.utad.practica_2_v2.languages.LanguagesProvider
+import io.paperdb.Paper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class LanguagesActivity : AppCompatActivity() {
+    private lateinit var adapter: LanguagesAdapter
+    private var languagesList = mutableListOf<Languages>()
+    private lateinit var binding: ActivityLanguagesBinding
+    val paperDb = PaperDbManager.getInstance(this)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityLanguagesBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(binding.root)
+
+        registerForContextMenu(binding.rvLanguages)  // Registra el RecyclerView
+
+        innitRecyclerView()
+        binding.btnCrear.setOnClickListener {
+            val intent = Intent(this, CreateLaguagesActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    fun innitRecyclerView() {
+        binding.rvLanguages.layoutManager = LinearLayoutManager(this)
+        adapter = LanguagesAdapter(languagesList) { onItemSelected(it) }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        readLanguagesInDB()
+    }
+
+    private fun readLanguagesInDB() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val lang = paperDb.readLanguagesInDB()
+            withContext(Dispatchers.Main) {
+                if (lang.isNotEmpty()) {
+                    adapter.submitList(lang.toMutableList())
+                    binding.rvLanguages.adapter = adapter
+                } else {
+                    binding.rvLanguages.adapter = adapter
+                }
+            }
+        }
+    }
+
+    private fun onItemSelected(languages: Languages) {
+        val intent = Intent(this, CreateLaguagesActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val frutaSeleccionada = languagesList[item.groupId]
+
+        when (item.itemId){
+            0 -> {
+                val alert = androidx.appcompat.app.AlertDialog.Builder(this).setTitle("Eliminar ${frutaSeleccionada.name}")
+                    .setMessage("¿Está seguro de querer eliminar ${frutaSeleccionada.name}?")
+                    .setNeutralButton("Cancelar",null)
+                    .setPositiveButton("Aceptar"){ _,_ ->
+                        mostrarMsg("Se ha eliminado ${frutaSeleccionada.name}")
+                    }.create()
+                alert.show()
+            }
+            1 -> {
+            }
+        }
+        return true
+    }
+
+    fun mostrarMsg(mensaje:String){
+        Snackbar.make(binding.root,mensaje,Snackbar.LENGTH_SHORT).show()
+    }
+
+}
