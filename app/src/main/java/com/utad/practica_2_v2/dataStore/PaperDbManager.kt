@@ -53,6 +53,11 @@ class PaperDbManager (private val context: Context){
             Paper.book("Languages").delete(language.name)
         }
     }
+    suspend fun deleteProject(project: Project) {
+        withContext(Dispatchers.IO) {
+            Paper.book("Projects").delete(project.name)
+        }
+    }
 
     suspend fun readLanguagesInDB(): List<Languages> {
         return withContext(Dispatchers.IO) {

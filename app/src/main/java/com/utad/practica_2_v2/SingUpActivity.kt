@@ -3,6 +3,7 @@ package com.utad.practica_2_v2
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,12 +15,12 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.utad.practica_2_v2.dataStore.DataStoreManager
 import com.utad.practica_2_v2.databinding.ActivitySingUpBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-//val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name="MIS_PREFERENCIAS2")
 class SingUpActivity : AppCompatActivity() {
 
     var name: String = ""
@@ -40,16 +41,18 @@ class SingUpActivity : AppCompatActivity() {
             insets
         }
 
+        // informa si los campos están vacios
         listeners()
 
-
+        // Creación y guardado de user
         binding.btRegistro.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                dataStore.saveData(name, password)
             }
             val intent = Intent(this, LoginActivity::class.java)
+            Toast.makeText(this, "Usuario creado con nombre $name", Toast.LENGTH_SHORT).show()
             startActivity(intent)
-        }
+         }
     }
 
     private fun listeners(){

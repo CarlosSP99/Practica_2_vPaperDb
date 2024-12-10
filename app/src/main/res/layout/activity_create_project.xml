@@ -45,7 +45,7 @@
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/tiempo_en_horas"
-                android:inputType="text"
+                android:inputType="number"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -206,7 +206,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="none"
-                    android:text="Lenguaje"
+                    android:text="@string/lenguaje"
                     android:textStyle="bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -217,6 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/Crear"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />

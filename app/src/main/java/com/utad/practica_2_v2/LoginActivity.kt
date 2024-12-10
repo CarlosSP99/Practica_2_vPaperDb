@@ -18,13 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
-    var name: String = ""
-    var password: String = ""
-    val dataStore = DataStoreManager.getInstance(this)
 
+    private lateinit var binding: ActivityLoginBinding
+    private var name: String = ""
+    private var password: String = ""
+    private val dataStore = DataStoreManager.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         binding=ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -68,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
                 userProfile-> withContext(Dispatchers.Main){
                     userDataBase= (userProfile.name ?:0).toString()
                     passwordDataBase= (userProfile.password?:0).toString()
-                if (name == userDataBase.toString() && password == passwordDataBase.toString()){
+                if (name == userDataBase && password == passwordDataBase){
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
@@ -81,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
     private fun loadDataFromUser(){
         lifecycleScope.launch {
             dataStore.loadData().collect {userProfile ->
+                // Actualiza la interfaz de usuario con los datos del usuario
                 withContext(Dispatchers.Main){
                     binding.etUser.setText(userProfile.name)
                     binding.etPass.setText(userProfile.password)

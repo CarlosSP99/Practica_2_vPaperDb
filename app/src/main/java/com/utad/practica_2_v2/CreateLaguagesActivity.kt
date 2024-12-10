@@ -17,9 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CreateLaguagesActivity : AppCompatActivity() {
-    val paperDb = PaperDbManager.getInstance(this)
+
+    private val paperDb = PaperDbManager.getInstance(this)
     private lateinit var binding: ActivityCreateLaguagesBinding
-    var autoIncrementId=0
+    private var autoIncrementId=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCreateLaguagesBinding.inflate(layoutInflater)
