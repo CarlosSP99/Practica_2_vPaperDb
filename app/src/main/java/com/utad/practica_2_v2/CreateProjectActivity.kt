@@ -44,10 +44,13 @@ class CreateProjectActivity : AppCompatActivity() {
             insets
         }
 
+        // Implementa la funcionalidad del spinner
         languageOptionConfiguration()
 
+        // Implementa la funcionalidad del calendario
         dateOptionConfiguration()
 
+        // comprueba que todos los campos están bien
         listeners()
 
         binding.btnCreate.setOnClickListener{
@@ -88,68 +91,25 @@ class CreateProjectActivity : AppCompatActivity() {
     }
 
     private fun listeners() {
-        binding.etTitle.addTextChangedListener{
-            checkTitle()
-        }
-        binding.etShortDescription.addTextChangedListener{
-            checkShortDescription()
-        }
-        binding.etTimeNeeded.addTextChangedListener{
-            checkPriority()
-        }
-        binding.etDate.addTextChangedListener{
-            checkDate()
-        }
-        binding.etDetails.addTextChangedListener{
-            checkDetails()
-        }
-        binding.rgPriority.setOnCheckedChangeListener {
-            _, _ -> checkPriority()
-        }
+        binding.etTitle.addTextChangedListener { checkAllFields() }
+        binding.etShortDescription.addTextChangedListener { checkAllFields() }
+        binding.etTimeNeeded.addTextChangedListener { checkAllFields() }
+        binding.etDate.addTextChangedListener { checkAllFields() }
+        binding.etDetails.addTextChangedListener { checkAllFields() }
+        binding.rgPriority.setOnCheckedChangeListener { _, _ -> checkAllFields() }
+        binding.autoCompleteTextView.addTextChangedListener { checkAllFields() }
     }
 
-    private fun checkDetails() {
-        if (binding.etDetails.text.isNotEmpty()){
-            binding.btnCreate.isEnabled = true
-        } else {
-            binding.btnCreate.isEnabled = false
-        }
+    private fun checkAllFields() {
+        val isTitleValid = binding.etTitle.text.isNotEmpty()
+        val isShortDescriptionValid = binding.etShortDescription.text.isNotEmpty()
+        val isTimeNeededValid = binding.etTimeNeeded.text.isNotEmpty()
+        val isDateValid = binding.etDate.text.isNotEmpty()
+        val isDetailsValid = binding.etDetails.text.isNotEmpty()
+        val isPriorityValid = binding.rgPriority.checkedRadioButtonId != -1
+        val isLenguageValid = binding.autoCompleteTextView.text.isNotEmpty() && binding.autoCompleteTextView.text.toString()!="Lenguaje"
+        binding.btnCreate.isEnabled = isTitleValid && isShortDescriptionValid && isTimeNeededValid && isDateValid && isDetailsValid && isPriorityValid && isLenguageValid
     }
-
-    private fun checkPriority() {
-        if (binding.rgPriority.checkedRadioButtonId != -1){
-            binding.btnCreate.isEnabled = true
-        } else {
-            binding.btnCreate.isEnabled = false
-        }
-    }
-
-    private fun checkDate() {
-        if (binding.tvDate.text.isNotEmpty()){
-            binding.btnCreate.isEnabled = true
-        } else {
-            binding.btnCreate.isEnabled = false
-        }
-    }
-
-    private fun checkShortDescription() {
-       if (binding.etShortDescription.text.toString().isNotEmpty()){
-           binding.btnCreate.isEnabled = true
-       } else {
-           binding.btnCreate.isEnabled = false
-       }
-    }
-
-    private fun checkTitle() {
-        if(binding.etTitle.text.toString().isNotEmpty()){
-            binding.btnCreate.isEnabled = true
-        } else {
-            binding.btnCreate.isEnabled = false
-        }
-    }
-
-
-
 
     private fun languageOptionConfiguration() {
         lifecycleScope.launch {
@@ -169,7 +129,7 @@ class CreateProjectActivity : AppCompatActivity() {
         }
     }
 
-    private fun dateOptionConfiguration(){
+     private fun dateOptionConfiguration(){
         val datePicker = binding.etDate
         datePicker.setOnClickListener {
             // Obtener la fecha actual para establecer como predeterminada

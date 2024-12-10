@@ -28,20 +28,25 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LanguagesActivity : AppCompatActivity() {
+
     private lateinit var adapter: LanguagesAdapter
     private var languagesList = mutableListOf<Languages>()
     private lateinit var binding: ActivityLanguagesBinding
-    val paperDb = PaperDbManager.getInstance(this)
+    private val paperDb = PaperDbManager.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityLanguagesBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
-
-        registerForContextMenu(binding.rvLanguages)  // Registra el RecyclerView
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         innitRecyclerView()
+
         binding.btnCrear.setOnClickListener {
             val intent = Intent(this, CreateLaguagesActivity::class.java)
             startActivity(intent)
@@ -50,7 +55,7 @@ class LanguagesActivity : AppCompatActivity() {
 
     fun innitRecyclerView() {
         binding.rvLanguages.layoutManager = LinearLayoutManager(this)
-        adapter = LanguagesAdapter(languagesList) { onItemSelected(it) }
+        adapter = LanguagesAdapter(languagesList)
     }
 
 
@@ -73,32 +78,5 @@ class LanguagesActivity : AppCompatActivity() {
         }
     }
 
-    private fun onItemSelected(languages: Languages) {
-        val intent = Intent(this, CreateLaguagesActivity::class.java)
-        startActivity(intent)
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val frutaSeleccionada = languagesList[item.groupId]
-
-        when (item.itemId){
-            0 -> {
-                val alert = androidx.appcompat.app.AlertDialog.Builder(this).setTitle("Eliminar ${frutaSeleccionada.name}")
-                    .setMessage("¿Está seguro de querer eliminar ${frutaSeleccionada.name}?")
-                    .setNeutralButton("Cancelar",null)
-                    .setPositiveButton("Aceptar"){ _,_ ->
-                        mostrarMsg("Se ha eliminado ${frutaSeleccionada.name}")
-                    }.create()
-                alert.show()
-            }
-            1 -> {
-            }
-        }
-        return true
-    }
-
-    fun mostrarMsg(mensaje:String){
-        Snackbar.make(binding.root,mensaje,Snackbar.LENGTH_SHORT).show()
-    }
 
 }

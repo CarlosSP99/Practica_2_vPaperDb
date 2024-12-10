@@ -9,7 +9,7 @@ import com.utad.practica_2_v2.languages.Languages
 class ProjectViewHolder (view: View): RecyclerView.ViewHolder(view) {
     val binding = ItemProjectBinding.bind(view)
 
-    fun render(project: Project, onClickListener:(Project) -> Unit){
+    fun render(project: Project, onClickListener:(Project) -> Unit, onDeleteClickListener:(Project) -> Unit){
         binding.tvTitle.text = project.name
         binding.tvDate.text=project.date.toString()
         binding.tvTime.text=project.timeNeeded.toString()
@@ -17,6 +17,9 @@ class ProjectViewHolder (view: View): RecyclerView.ViewHolder(view) {
         binding.tvPriority.text=project.priority.displayName
         itemView.setOnClickListener{
             onClickListener(project)
+        }
+        binding.btnDelete.setOnClickListener{
+            onDeleteClickListener(project)
         }
     }
 

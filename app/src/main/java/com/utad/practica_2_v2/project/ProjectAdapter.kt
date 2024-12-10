@@ -8,7 +8,8 @@ import com.utad.practica_2_v2.languages.Languages
 import com.utad.practica_2_v2.languages.LanguagesViewHolder
 
 class ProjectAdapter(private var list: List<Project>,
-                     private  val onClickListener:(Project) -> Unit): RecyclerView.Adapter<ProjectViewHolder>() {
+                     private  val onClickListener:(Project) -> Unit,
+                     private  val onDeleteClickListener:(Project) -> Unit): RecyclerView.Adapter<ProjectViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ProjectViewHolder(layoutInflater.inflate(R.layout.item_project, parent, false))
@@ -20,7 +21,7 @@ class ProjectAdapter(private var list: List<Project>,
 
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
         val item = list[position]
-        holder.render(item, onClickListener)
+        holder.render(item, onClickListener, onDeleteClickListener)
      }
 
     fun submitList(projectList: MutableList<Project>) {

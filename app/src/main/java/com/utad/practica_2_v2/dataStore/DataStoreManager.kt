@@ -18,6 +18,7 @@ class DataStoreManager(val context: Context) {
              editor[USER_FIRST_NAME] = name
              editor[USER_PASSWORD] = password
          }
+
      }
 
      fun loadData(): Flow<User> {

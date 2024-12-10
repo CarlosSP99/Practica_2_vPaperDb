@@ -18,13 +18,13 @@ import kotlinx.coroutines.withContext
 class ProjectDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProjectDetailBinding
     private val paperDb = PaperDbManager.getInstance(this)
-    var title = ""
-    var shortDescription = ""
-    var date = ""
-    var priority : Priority = Priority.LOW
-    var timeNeeded = ""
-    var lenguage = ""
-    var details = ""
+    private var title = ""
+    private var shortDescription = ""
+    private var date = ""
+    private  var priority : Priority = Priority.LOW
+    private var timeNeeded = ""
+    private  var lenguage = ""
+    private var details = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityProjectDetailBinding.inflate(layoutInflater)
@@ -50,7 +50,7 @@ class ProjectDetailActivity : AppCompatActivity() {
          title=binding.tvTitle.text.toString()
          shortDescription=binding.etShortDescription.text.toString()
          date=binding.etDate.text.toString()
-         timeNeeded=binding.etTimeNeeded.text.toString()
+         timeNeeded=binding.etTimeNeeded.text.toString()+"h"
          details=binding.etDetails.text.toString()
          lenguage=binding.autoCompleteTextView.text.toString()
          priority=priorityType()
