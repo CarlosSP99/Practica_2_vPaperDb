@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
         var userDataBase=""
         var passwordDataBase=""
 
+
         lifecycleScope.launch {
             dataStore.loadData().collect{
                 userProfile-> withContext(Dispatchers.Main){
