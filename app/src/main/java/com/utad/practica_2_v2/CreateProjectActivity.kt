@@ -6,23 +6,27 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import com.utad.practica_2_v2.dataStore.AppDatabase
 import com.utad.practica_2_v2.dataStore.PaperDbManager
 import com.utad.practica_2_v2.databinding.ActivityCreateProjectBinding
 import com.utad.practica_2_v2.project.Priority
 import com.utad.practica_2_v2.project.Project
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 
 class CreateProjectActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateProjectBinding
-    val paperDb = PaperDbManager.getInstance(this)
+    private lateinit var appDb: AppDatabase
     var title = ""
     var shortDescription = ""
     var date = ""
@@ -43,6 +47,8 @@ class CreateProjectActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        appDb = AppDatabase.getDatabase(this)
 
         // Implementa la funcionalidad del spinner
         languageOptionConfiguration()
@@ -69,12 +75,23 @@ class CreateProjectActivity : AppCompatActivity() {
         priority=priorityType()
         timeNeeded=binding.etTimeNeeded.text.toString()
         timeNeeded=timeNeeded+"h"
-        lenguage=binding.autoCompleteTextView.text.toString()
+        lenguage=binding.SeymourSpinner.selectedItem.toString()
         details=binding.etDetails.text.toString()
 
-        // Creación de objeto projecto y guardado en base de datos
-        val projectCreated= Project(title,shortDescription,date,priority,timeNeeded,lenguage,details)
-        paperDb.saveDataProject(projectCreated)
+         //Creación de objeto projecto y guardado en base de datos
+        val projectCreated= Project(
+            name=title,
+            shortDescription = shortDescription,
+            date = date,
+            priority = priority,
+            timeNeeded = timeNeeded,
+            language = lenguage,
+            details = details
+        )
+        lifecycleScope.launch(Dispatchers.IO){
+            appDb.projectDao().insertProject(projectCreated)
+        }
+
     }
 
     private fun priorityType(): Priority {
@@ -97,7 +114,6 @@ class CreateProjectActivity : AppCompatActivity() {
         binding.etDate.addTextChangedListener { checkAllFields() }
         binding.etDetails.addTextChangedListener { checkAllFields() }
         binding.rgPriority.setOnCheckedChangeListener { _, _ -> checkAllFields() }
-        binding.autoCompleteTextView.addTextChangedListener { checkAllFields() }
     }
 
     private fun checkAllFields() {
@@ -107,25 +123,30 @@ class CreateProjectActivity : AppCompatActivity() {
         val isDateValid = binding.etDate.text.isNotEmpty()
         val isDetailsValid = binding.etDetails.text.isNotEmpty()
         val isPriorityValid = binding.rgPriority.checkedRadioButtonId != -1
-        val isLenguageValid = binding.autoCompleteTextView.text.isNotEmpty() && binding.autoCompleteTextView.text.toString()!="Lenguaje"
-        binding.btnCreate.isEnabled = isTitleValid && isShortDescriptionValid && isTimeNeededValid && isDateValid && isDetailsValid && isPriorityValid && isLenguageValid
+        val isLenguageValid = binding.SeymourSpinner.selectedItemPosition !=-1
+        binding.btnCreate.isEnabled =
+            isTitleValid && isShortDescriptionValid && isTimeNeededValid
+                    && isDateValid && isDetailsValid && isPriorityValid && isLenguageValid
     }
 
     private fun languageOptionConfiguration() {
         lifecycleScope.launch {
-            val languagesList = paperDb.readLanguagesInDB()
-            val listOfLanguages: MutableList<String> = mutableListOf()
-            languagesList.forEach { language ->
-                listOfLanguages.add(language.name)
-                Log.d("Languages", language.name)
+            val languagesList = withContext(Dispatchers.IO) {
+                appDb.languagesDao().getAllLanguagesList()
             }
 
-            val languages = listOfLanguages.toTypedArray()
-            val arrayAdapter =
-                ArrayAdapter(this@CreateProjectActivity, R.layout.dropdown_menu, languages)
+            val listOfLanguages = languagesList.map { it.name }.toMutableList()
 
-            val autocompleteTV = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
-            autocompleteTV.setAdapter(arrayAdapter)
+            withContext(Dispatchers.Main) {
+                val arrayAdapter = ArrayAdapter(
+                    this@CreateProjectActivity,
+                    android.R.layout.simple_spinner_item,
+                    listOfLanguages
+                )
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                val spinner = findViewById<Spinner>(R.id.Seymour_spinner) // Use the correct Spinner ID
+                spinner.adapter = arrayAdapter
+            }
         }
     }
 

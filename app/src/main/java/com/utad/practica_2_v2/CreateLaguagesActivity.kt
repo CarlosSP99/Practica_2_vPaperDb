@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import com.utad.practica_2_v2.dataStore.AppDatabase
 import com.utad.practica_2_v2.dataStore.DataStoreManager
 import com.utad.practica_2_v2.dataStore.PaperDbManager
 import com.utad.practica_2_v2.databinding.ActivityCreateLaguagesBinding
@@ -18,9 +19,8 @@ import kotlinx.coroutines.withContext
 
 class CreateLaguagesActivity : AppCompatActivity() {
 
-    private val paperDb = PaperDbManager.getInstance(this)
     private lateinit var binding: ActivityCreateLaguagesBinding
-    private var autoIncrementId=0
+    private lateinit var appDb: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCreateLaguagesBinding.inflate(layoutInflater)
@@ -28,15 +28,18 @@ class CreateLaguagesActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        appDb = AppDatabase.getDatabase(this)
+
         listeners()
 
         binding.btnCrear.setOnClickListener {
-            val languageName = binding.etNameLanguague.text.toString()
-            autoIncrementId++
-            val language = Languages(languageName, autoIncrementId)
-            paperDb.saveDataLanguage(language)
-            finish()
-        }
+            lifecycleScope.launch(Dispatchers.IO){
+                 val languageName = binding.etNameLanguague.text.toString()
+                val language = Languages(name=languageName)
+                appDb.languagesDao().insert(language)
+                finish()
+            }
+         }
     }
 
     private fun listeners() {

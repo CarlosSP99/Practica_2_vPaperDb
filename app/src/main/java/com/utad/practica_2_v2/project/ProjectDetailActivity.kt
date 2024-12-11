@@ -54,9 +54,9 @@ class ProjectDetailActivity : AppCompatActivity() {
          details=binding.etDetails.text.toString()
          lenguage=binding.autoCompleteTextView.text.toString()
          priority=priorityType()
-        paperDb.saveDataProject(Project(title,shortDescription,date,priority,timeNeeded,lenguage,details))
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+      //  paperDb.saveDataProject(Project(title,shortDescription,date,priority,timeNeeded,lenguage,details))
+        //val intent = Intent(this, MainActivity::class.java)
+        //tartActivity(intent)
     }
 
 
@@ -79,7 +79,7 @@ class ProjectDetailActivity : AppCompatActivity() {
                 }
                 binding.etTimeNeeded.setText(objectProject.timeNeeded)
                 binding.etDetails.setText(objectProject.details)
-                binding.autoCompleteTextView.setText(objectProject.lenguage.toString())
+              //  binding.autoCompleteTextView.setText(objectProject.lenguage.toString())
             }
 
         }

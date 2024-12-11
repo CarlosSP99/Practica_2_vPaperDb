@@ -20,7 +20,6 @@ class DataStoreManager(val context: Context) {
          }
 
      }
-
      fun loadData(): Flow<User> {
          return context.dataStore.data.map { preferences ->
              User(
