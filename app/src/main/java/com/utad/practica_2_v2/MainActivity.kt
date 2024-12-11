@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        Log.i("REFLEJO","asdasd")
 
 
         appDb = AppDatabase.getDatabase(this)
@@ -50,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         innitRecyclerView()
 
         readProjectsInDB()
-
 
         // el metodo no funciona porq no le da la gana no puedo hacer mucho más
         projectList.sortBy { getPriority(it.priority) }
@@ -60,17 +58,17 @@ class MainActivity : AppCompatActivity() {
            startActivity(intent)
         }
 
-     binding.toolbar.setOnMenuItemClickListener({ menuItem ->
-         when (menuItem.itemId) {
-             R.id.toolbar_option -> {
-                 val intent = Intent(this, LanguagesActivity::class.java)
-                 startActivity(intent)
-                 true
+         binding.toolbar.setOnMenuItemClickListener({ menuItem ->
+             when (menuItem.itemId) {
+                 R.id.toolbar_option -> {
+                     val intent = Intent(this, LanguagesActivity::class.java)
+                     startActivity(intent)
+                     true
+                 }
+                 else -> false
              }
-             else -> false
-         }
-     })
-    }
+         })
+        }
 
 
     private fun innitRecyclerView() {
