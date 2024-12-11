@@ -1,3 +1,11 @@
 package com.utad.practica_2_v2.languages
 
-data class Languages( val name: String, val id: Int)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Languages(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val name: String
+)
