@@ -67,19 +67,6 @@ class LanguagesActivity : AppCompatActivity() {
             }
         }
 
-//    private fun readLanguagesInDB() {
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val lang = paperDb.readLanguagesInDB()
-//            withContext(Dispatchers.Main) {
-//                if (lang.isNotEmpty()) {
-//                    adapter.submitList(lang.toMutableList())
-//                    binding.rvLanguages.adapter = adapter
-//                } else {
-//                    binding.rvLanguages.adapter = adapter
-//                }
-//            }
-//        }
-//    }
 
     }
 }
