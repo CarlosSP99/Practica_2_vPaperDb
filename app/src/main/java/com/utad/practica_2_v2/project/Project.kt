@@ -9,11 +9,11 @@ import com.utad.practica_2_v2.languages.Languages
 data class Project(
     @PrimaryKey(autoGenerate = true)
     val id: Int=0,
-    val name: String,
-    val shortDescription: String,
-    val date: String,
-    val priority: Priority,
-    val timeNeeded: String,
-    val details: String,
-    val language: String
+    val name: String="0",
+    val shortDescription: String="0",
+    val date: String="0",
+    val priority: Priority=Priority.HIGH,
+    val timeNeeded: String="0",
+    val details: String="0",
+    val language: String="0"
     )

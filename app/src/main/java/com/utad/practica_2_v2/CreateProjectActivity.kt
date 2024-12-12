@@ -135,13 +135,13 @@ class CreateProjectActivity : AppCompatActivity() {
                 appDb.languagesDao().getAllLanguagesList()
             }
 
-            val listOfLanguages = languagesList.map { it.name }.toMutableList()
+            val languagesNames = languagesList.map { it.name }
 
             withContext(Dispatchers.Main) {
                 val arrayAdapter = ArrayAdapter(
                     this@CreateProjectActivity,
                     android.R.layout.simple_spinner_item,
-                    listOfLanguages
+                    languagesNames
                 )
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 val spinner = findViewById<Spinner>(R.id.Seymour_spinner) // Use the correct Spinner ID

@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var projectList = mutableListOf<Project>()
     private lateinit var adapter: ProjectAdapter
     private lateinit var appDb: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         readProjectsInDB()
 
         // el metodo no funciona porq no le da la gana no puedo hacer mucho más
-        projectList.sortBy { getPriority(it.priority) }
+        projectList.sortByDescending { getPriority(it.priority) }
 
         binding.btnCrear.setOnClickListener {
            val intent = Intent(this, CreateProjectActivity::class.java)
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvProjects.layoutManager = LinearLayoutManager(this)
         adapter = ProjectAdapter(projectList, onClickListener = { project ->
             val intent = Intent(this, ProjectDetailActivity::class.java)
-            intent.putExtra("name", project.id)
+            intent.putExtra("id", project.id.toInt()) // Convierte a Int si es necesario.
             startActivity(intent)
         }, onDeleteClickListener = { project ->
 
@@ -116,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                 Priority.LOW -> 3
                 Priority.MEDIUM -> 1
                 Priority.HIGH -> 2
-                else -> 3
             }
         }
     private fun display(message: String) {

@@ -5,7 +5,8 @@
         android:id="@+id/toolbar_option"
         android:contentDescription="@string/create_language"
         android:icon="@drawable/pc"
-        android:iconTint="@color/white"
+        app:iconTint="@color/white"
+
         app:showAsAction="ifRoom"
         android:title="@string/language" />
 </menu>
