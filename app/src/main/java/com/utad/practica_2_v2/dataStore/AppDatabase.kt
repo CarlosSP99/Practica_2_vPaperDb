@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase
 import com.utad.practica_2_v2.languages.Languages
 import com.utad.practica_2_v2.project.Project
 
-@Database(entities = [Languages::class, Project::class], version = 1)
+@Database(entities = [Languages::class, Project::class], version = 2 )
 abstract class  AppDatabase: RoomDatabase(){
         abstract fun languagesDao():LanguageDao
         abstract fun projectDao():ProjectDao
