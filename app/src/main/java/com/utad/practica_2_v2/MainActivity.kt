@@ -59,17 +59,18 @@ class MainActivity : AppCompatActivity() {
            startActivity(intent)
         }
 
-         binding.toolbar.setOnMenuItemClickListener({ menuItem ->
+         binding.toolbar.setOnMenuItemClickListener { menuItem ->
              when (menuItem.itemId) {
                  R.id.toolbar_option -> {
                      val intent = Intent(this, LanguagesActivity::class.java)
                      startActivity(intent)
                      true
                  }
+
                  else -> false
              }
-         })
-        }
+         }
+    }
 
 
     private fun innitRecyclerView() {

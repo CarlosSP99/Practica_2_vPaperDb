@@ -6,7 +6,6 @@
         android:contentDescription="@string/create_language"
         android:icon="@drawable/pc"
         app:iconTint="@color/white"
-
         app:showAsAction="ifRoom"
         android:title="@string/language" />
 </menu>

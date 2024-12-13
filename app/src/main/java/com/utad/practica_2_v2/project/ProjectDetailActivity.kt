@@ -1,5 +1,6 @@
 package com.utad.practica_2_v2.project
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.utad.practica_2_v2.databinding.ActivityProjectDetailBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class ProjectDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProjectDetailBinding
@@ -24,7 +26,6 @@ class ProjectDetailActivity : AppCompatActivity() {
     private var date = ""
     private  var priority : Priority = Priority.LOW
     private var timeNeeded = ""
-    private  var lenguage = ""
     private var details = ""
     private lateinit var appDb: AppDatabase
 
@@ -43,6 +44,8 @@ class ProjectDetailActivity : AppCompatActivity() {
         projectId = intent.getIntExtra("id", 1)
 
         fillActivity(projectId)
+
+        dateOptionConfiguration()
 
         binding.btnCreate.setOnClickListener {
             editProject()
@@ -119,6 +122,29 @@ class ProjectDetailActivity : AppCompatActivity() {
             priority= Priority.LOW
         }
         return priority
+    }
+
+    private fun dateOptionConfiguration(){
+        val datePicker = binding.etDate
+        datePicker.setOnClickListener {
+            // Obtener la fecha actual para establecer como predeterminada
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            // Mostrar el DatePickerDialog
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Actualizar el campo con la fecha seleccionada
+                    val date = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                    datePicker.setText(date)
+                },
+                year, month, day
+            )
+            datePickerDialog.show()
+        }
     }
 
 

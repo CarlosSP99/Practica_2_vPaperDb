@@ -36,4 +36,5 @@
     <string name="modificar">Modificar</string>
     <string name="eliminar">Eliminar</string>
     <string name="lenguaje">Lenguaje</string>
+    <string name="project_manager_app">Project Manager App</string>
 </resources>
