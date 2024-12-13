@@ -7,6 +7,7 @@ plugins {
 android {
     namespace = "com.utad.practica_2_v2"
     compileSdk = 35
+
     buildFeatures {
         viewBinding = true
     }
